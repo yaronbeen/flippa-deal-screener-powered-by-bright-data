@@ -72,7 +72,8 @@ Create `input.json`:
 
 - `listing_id`, `source_url`, and `captured_at` are required. Take the ID from the canonical public listing URL.
 - Preserve displayed price/profit as source claims. The helper computes `annual_profit_multiple = asking_price / (monthly_profit * 12)` only when both are positive and explicit.
-- `age_months` and `monthly_traffic` are optional source fields, but missing values prevent `manual_diligence` and produce `evidence_gap`.
+- `age_months` and `monthly_traffic` are optional source fields. Missing values add diligence flags but do not block `manual_diligence` when explicit price and positive monthly profit pass the mechanical rules.
+- No individual listing page was verified in the documented live smoke check. Treat every listing capture as unproven until it succeeds; never imply that listing-level extraction was live-tested.
 - Do not infer traffic, revenue, profit, ownership, or verification from badges or marketing copy.
 
 ### 3. Run the helper

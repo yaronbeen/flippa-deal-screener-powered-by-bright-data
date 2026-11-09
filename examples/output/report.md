@@ -2,11 +2,11 @@
 
 Listing figures are seller or marketplace claims and are not independently verified. This is a diligence queue, not a valuation, recommendation, or purchase decision.
 
-| Listing | Price | Monthly profit | Annual multiple | Decision | Status |
-|---|---:|---:|---:|---|---|
-| Acme Metrics | 24000.0 | 2000.0 | 1.0 | manual_diligence | new |
-| Beta Content | 18000.0 | unknown | unknown | evidence_gap | new |
-| Gamma Commerce | 60000.0 | 3000.0 | 1.67 | excluded | new |
+| Listing | Price | Monthly profit | Annual multiple | Decision | Flags | Status |
+|---|---:|---:|---:|---|---|---|
+| Acme Metrics | 24000.0 | 2000.0 | 1.0 | manual_diligence | seller_claims_not_independently_verified | new |
+| Beta Content | 18000.0 | unknown | unknown | evidence_gap | seller_claims_not_independently_verified, profit_not_disclosed | new |
+| Gamma Commerce | 60000.0 | 3000.0 | 1.67 | excluded | seller_claims_not_independently_verified | new |
 
 ## Displayed category context
 

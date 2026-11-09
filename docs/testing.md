@@ -2,9 +2,9 @@
 
 ## Test-first history
 
-The initial commit is `test: define expected behavior (red)`. At that point the test suite failed because `scripts/report.py` did not exist. The implementation followed those tests. Later regression tests were also run before the behavior they define.
+The initial commit is `test: define expected behavior (red)`. At that point the suite failed because `scripts/report.py` did not exist. The implementation followed. Review regression cases have a separate `test: add review regression cases (red)` commit before their fix commit.
 
-The implementation commit includes the green helper, documentation, examples, and CI. Review the git history to inspect the sequence.
+The history also includes documentation and generated examples. Not every later test was individually proven red; the sanitized category-context test passed when introduced. The git sequence shows the actual initial and review rounds.
 
 ## Run locally
 

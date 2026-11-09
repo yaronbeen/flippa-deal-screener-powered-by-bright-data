@@ -12,8 +12,8 @@ The three category observations are preserved in the sanitized live fixture.
 
 ## The limit that shaped the skill
 
-The SaaS category response reported 97,572 characters and returned the first 40,000. The capture ended in filters before individual listing cards. No listing-level live fixture is claimed.
+The SaaS category response reported 97,572 characters and returned the first 40,000. The capture ended in filters before individual listing cards. No individual listing URL was fetched during this smoke check, so listing-level extraction remains unverified and no listing-level live fixture is claimed.
 
-Accordingly, this skill requires user-supplied public listing URLs for deal detail. It never claims that a truncated category page enumerated the marketplace. A listing that lacks price, profit, age, or traffic becomes `evidence_gap`.
+Accordingly, this skill requires user-supplied public listing URLs for deal detail. It never claims that a truncated category page enumerated the marketplace. Missing price or profit produces `evidence_gap`; missing age or traffic adds a diligence flag without blocking an otherwise supported `manual_diligence` row.
 
 Review Flippa's current terms before collection. No login, seller contact, bid, or purchase is part of the smoke check or the skill.

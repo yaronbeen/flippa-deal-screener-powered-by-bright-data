@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-PERSONAL = ("author", "founder", "seller", "reviewer", "username", "handle", "email", "phone", "broker")
+PUBLIC_FIELDS = {"listing_id", "title", "category", "asking_price", "monthly_profit", "age_months", "monthly_traffic", "source_url", "captured_at"}
 
 
 def csv_cell(value):
@@ -34,7 +34,7 @@ def profit_multiple(price, monthly_profit):
 
 
 def public_record(record):
-    return {k: v for k, v in record.items() if not any(word in k.lower() for word in PERSONAL)}
+    return {k: v for k, v in record.items() if k in PUBLIC_FIELDS}
 
 
 def normalize_listings(records):
@@ -65,7 +65,8 @@ def screen_listing(row, criteria):
         excluded |= row["monthly_profit"] < criteria["min_monthly_profit"]
     if criteria.get("max_multiple") is not None and row.get("annual_profit_multiple") is not None:
         excluded |= row["annual_profit_multiple"] > criteria["max_multiple"]
-    decision = "excluded" if excluded else ("evidence_gap" if len(flags) > 1 else "manual_diligence")
+    core_missing = row.get("asking_price") is None or row.get("monthly_profit") is None or row.get("annual_profit_multiple") is None
+    decision = "excluded" if excluded else ("evidence_gap" if core_missing else "manual_diligence")
     result = dict(row)
     result.update({"decision": decision, "flags": flags})
     return result
@@ -79,14 +80,18 @@ def comparison_value(value):
     return value
 
 
+def md(value):
+    return " ".join(str(value if value is not None else "").split()).replace("|", "\\|")
+
+
 def render(result):
-    lines = ["# Flippa Deal Screener | Powered by Bright Data", "", "Listing figures are seller or marketplace claims and are not independently verified. This is a diligence queue, not a valuation, recommendation, or purchase decision.", "", "| Listing | Price | Monthly profit | Annual multiple | Decision | Status |", "|---|---:|---:|---:|---|---|"]
+    lines = ["# Flippa Deal Screener | Powered by Bright Data", "", "Listing figures are seller or marketplace claims and are not independently verified. This is a diligence queue, not a valuation, recommendation, or purchase decision.", "", "| Listing | Price | Monthly profit | Annual multiple | Decision | Flags | Status |", "|---|---:|---:|---:|---|---|---|"]
     for row in result["rows"]:
-        lines.append(f"| {row.get('title', row['listing_id'])} | {row.get('asking_price') if row.get('asking_price') is not None else 'unknown'} | {row.get('monthly_profit') if row.get('monthly_profit') is not None else 'unknown'} | {row.get('annual_profit_multiple') if row.get('annual_profit_multiple') is not None else 'unknown'} | {row['decision']} | {row['status']} |")
+        lines.append(f"| {md(row.get('title', row['listing_id']))} | {row.get('asking_price') if row.get('asking_price') is not None else 'unknown'} | {row.get('monthly_profit') if row.get('monthly_profit') is not None else 'unknown'} | {row.get('annual_profit_multiple') if row.get('annual_profit_multiple') is not None else 'unknown'} | {row['decision']} | {', '.join(row['flags'])} | {row['status']} |")
     if result["markets"]:
         lines += ["", "## Displayed category context", "", "Category counts are marketplace labels at capture time, not demand or transaction volume."]
         for row in result["markets"]:
-            lines.append(f"- {row.get('category')}: {row.get('displayed_listing_count', 'unknown')} displayed listings")
+            lines.append(f"- {md(row.get('category'))}: {row.get('displayed_listing_count', 'unknown')} displayed listings")
     return "\n".join(lines) + "\n"
 
 

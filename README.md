@@ -12,11 +12,11 @@ Use it to:
 
 - Screen a buyer-supplied set of SaaS, content, ecommerce, or app listings.
 - Compare displayed price and monthly profit without hiding missing inputs.
-- Carry a watchlist forward and spot price or profit changes between captures.
+- Compare current rows with a prior snapshot for price or profit changes; vanished listings are not labeled as removed.
 
 ## Why Bright Data
 
-Deal research should not require a new scraper for every marketplace. [Bright Data](https://brightdata.com/) MCP gives your agent public category and listing pages as Markdown inside the research workflow. Category context and selected listing evidence land in one normalized input. The agent can spend its effort on diligence questions instead of page plumbing.
+Deal research should not require a new scraper for every marketplace. [Bright Data](https://brightdata.com/) MCP gives your agent one way to attempt public category and user-supplied listing pages as Markdown inside the research workflow. The live check verified category-page context only; it did not verify an individual listing capture. The agent can spend its effort on diligence questions instead of page plumbing, while failed listing captures remain explicit evidence gaps.
 
 ## Start with 5,000 free credits
 
@@ -80,10 +80,11 @@ The example is synthetic. The [live-check note](docs/live-check.md) documents th
 
 ## Example output
 
-| Listing | Price | Monthly profit | Annual multiple | Decision |
-|---|---:|---:|---:|---|
-| Acme Metrics | $24,000 | $2,000 | 1.00 | manual_diligence |
-| Beta Content | $18,000 | unknown | unknown | evidence_gap |
+| Listing | Price | Monthly profit | Annual multiple | Decision | Flags | Status |
+|---|---:|---:|---:|---|---|---|
+| Acme Metrics | 24000.0 | 2000.0 | 1.0 | manual_diligence | seller_claims_not_independently_verified | new |
+| Beta Content | 18000.0 | unknown | unknown | evidence_gap | seller_claims_not_independently_verified, profit_not_disclosed | new |
+| Gamma Commerce | 60000.0 | 3000.0 | 1.67 | excluded | seller_claims_not_independently_verified | new |
 
 `manual_diligence` means the supplied fields passed your mechanical rules. It does not mean the business is good, the seller is right, or the price is fair.
 
@@ -103,6 +104,7 @@ Tests cover money parsing, positive-profit gates, dedupe, seller-identity remova
 - Not independent verification of revenue, profit, traffic, ownership, or seller claims.
 - Not a complete marketplace scrape. You supply the deal set.
 - Not a bidding, broker-contact, or transaction tool.
+- Not permission to ignore Flippa's current terms. Review them before collection.
 
 ## Repo map
 
@@ -120,7 +122,9 @@ docs/                    Setup, schema, testing, and live-check notes
 
 **What is the CSV key?**  `listing_id`, taken from the public listing URL. Capture timestamps do not count as content changes.
 
-**What happens when monthly profit is missing?**  The multiple stays unknown and the listing becomes `evidence_gap`. Zero is never substituted for unknown.
+**Was an individual listing page verified live?**  No. The smoke check fetched only the home and category pages, and the category capture ended before listing cards. Listing-level collection remains an explicit runtime evidence check, not a verified claim.
+
+**What happens when monthly profit is missing?**  The multiple stays unknown and the listing becomes `evidence_gap`. Zero is never substituted for unknown. Missing age or traffic adds a flag but does not block `manual_diligence` when explicit price and positive monthly profit pass your rules.
 
 ---
 
