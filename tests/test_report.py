@@ -41,6 +41,14 @@ class FlippaTests(unittest.TestCase):
         self.assertIn("traffic_not_disclosed", sparse["flags"])
         self.assertEqual(screen_listing(dict(base, asking_price=None), {})["decision"], "evidence_gap")
 
+    def test_non_positive_disclosed_figures_have_explicit_flags(self):
+        base = {"listing_id": "123", "asking_price": 12000, "monthly_profit": 1000, "annual_profit_multiple": 1.0}
+        zero_profit = screen_listing(dict(base, monthly_profit=0, annual_profit_multiple=None), {})
+        self.assertEqual(zero_profit["decision"], "evidence_gap")
+        self.assertIn("profit_not_positive", zero_profit["flags"])
+        zero_price = screen_listing(dict(base, asking_price=0, annual_profit_multiple=None), {})
+        self.assertIn("price_not_positive", zero_price["flags"])
+
     def test_csv_diff_and_outputs(self):
         self.assertEqual(csv_cell("=HYPERLINK()"), "'=HYPERLINK()")
         payload = {"criteria": {"max_price": 20000}, "rows": [{"listing_id": "123", "title": "Acme SaaS", "asking_price": "$12k", "monthly_profit": "$1k", "age_months": 24, "monthly_traffic": 5000, "category": "SaaS", "source_url": "https://flippa.com/123-acme", "captured_at": "2026-11-09"}], "markets": [{"category": "SaaS", "displayed_listing_count": 677, "source_url": "https://flippa.com/buy/saas", "captured_at": "2026-11-09"}]}
