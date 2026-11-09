@@ -4,6 +4,19 @@
 
 Turn selected public Flippa listing pages into a disciplined acquisition research queue. Calculate simple annual profit multiples when the figures allow it. Flag missing price, profit, age, and traffic. Keep seller claims separate from verified facts.
 
+## In plain English
+
+**Screen Flippa listings you pick, calculate the profit multiple and see what is missing before you spend a dollar.**
+
+An AI-agent skill. You paste the Flippa listing URLs you are considering and your buy-box rules (max price, minimum profit, max multiple). Your agent uses Bright Data MCP to read the public pages and sorts each listing.
+
+| | |
+|---|---|
+| **You give it** | Flippa listing URLs plus your price and profit limits. |
+| **You get** | `listings.csv`, `report.md` and `diligence.md`: each listing marked `manual_diligence`, `evidence_gap` or `excluded` with reasons, and a checklist of what to ask the seller. |
+| **Made for** | Buyers of small online businesses doing a first-pass screen. |
+| **Boundaries** | Not valuation, legal or buying advice; seller claims stay separate from facts. |
+
 ## The decision
 
 **Which listing deserves manual diligence, which is outside your rules, and which lacks evidence?**
