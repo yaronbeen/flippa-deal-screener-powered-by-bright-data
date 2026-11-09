@@ -62,17 +62,17 @@ def screen_listing(row, criteria):
         flags.append("price_not_positive")
     if row.get("monthly_profit") is not None and row["monthly_profit"] <= 0:
         flags.append("profit_not_positive")
-    excluded = False
-    if criteria.get("max_price") is not None and row.get("asking_price") is not None:
-        excluded |= row["asking_price"] > criteria["max_price"]
-    if criteria.get("min_monthly_profit") is not None and row.get("monthly_profit") is not None:
-        excluded |= row["monthly_profit"] < criteria["min_monthly_profit"]
-    if criteria.get("max_multiple") is not None and row.get("annual_profit_multiple") is not None:
-        excluded |= row["annual_profit_multiple"] > criteria["max_multiple"]
+    exclusion_reasons = []
+    if criteria.get("max_price") is not None and row.get("asking_price") is not None and row["asking_price"] > criteria["max_price"]:
+        exclusion_reasons.append("price_above_max")
+    if criteria.get("min_monthly_profit") is not None and row.get("monthly_profit") is not None and row["monthly_profit"] < criteria["min_monthly_profit"]:
+        exclusion_reasons.append("profit_below_min")
+    if criteria.get("max_multiple") is not None and row.get("annual_profit_multiple") is not None and row["annual_profit_multiple"] > criteria["max_multiple"]:
+        exclusion_reasons.append("multiple_above_max")
     core_missing = row.get("asking_price") is None or row.get("monthly_profit") is None or row.get("annual_profit_multiple") is None
-    decision = "excluded" if excluded else ("evidence_gap" if core_missing else "manual_diligence")
+    decision = "excluded" if exclusion_reasons else ("evidence_gap" if core_missing else "manual_diligence")
     result = dict(row)
-    result.update({"decision": decision, "flags": flags})
+    result.update({"decision": decision, "flags": flags, "exclusion_reasons": exclusion_reasons})
     return result
 
 
@@ -99,6 +99,31 @@ def render(result):
     return "\n".join(lines) + "\n"
 
 
+def render_diligence(rows):
+    lines = ["# Flippa manual diligence checklist | Powered by Bright Data", "", "Use this as a request list for human diligence. It is not a valuation, legal review, or purchase recommendation.", ""]
+    if not rows:
+        lines.append("No listings were supplied.")
+    checks = {
+        "seller_claims_not_independently_verified": "Verify displayed price and profit against independent financial and platform records.",
+        "price_not_disclosed": "Obtain the current asking price and any fees.",
+        "profit_not_disclosed": "Obtain a profit-and-loss statement and reconcile claimed monthly profit.",
+        "age_not_disclosed": "Verify the business age with founding and ownership records.",
+        "traffic_not_disclosed": "Verify monthly traffic with read-only analytics evidence.",
+        "price_not_positive": "Resolve the non-positive asking price before calculating economics.",
+        "profit_not_positive": "Resolve the non-positive monthly profit before calculating economics.",
+    }
+    for row in rows:
+        lines += [f"## {md(row.get('title') or row['listing_id'])} — {row['decision']}", "", f"Source: {md(row.get('source_url') or 'not captured')}", ""]
+        if row["decision"] == "excluded":
+            lines += [f"- Mechanical exclusion: {', '.join(row['exclusion_reasons'])}.", "- Change the buy-box criteria and rerun if you want to reconsider; do not silently override the rule.", ""]
+            continue
+        lines.append("### Resolve before any offer")
+        lines.append("")
+        lines += [f"- [ ] {checks[flag]}" for flag in row["flags"] if flag in checks]
+        lines += ["- [ ] Confirm ownership, authority to sell, transfer obligations, and included assets.", "- [ ] Reconcile revenue, expenses, refunds, churn, traffic sources, and concentration risks.", "- [ ] Obtain qualified legal, tax, and financial review before any bid or offer.", ""]
+    return "\n".join(lines) + "\n"
+
+
 def analyze(payload, previous=None):
     criteria = payload.get("criteria", {})
     rows = [screen_listing(r, criteria) for r in normalize_listings(payload.get("rows", []))]
@@ -110,6 +135,7 @@ def analyze(payload, previous=None):
     run_id = hashlib.sha256(json.dumps(comparison_value({"rows": rows, "markets": markets}), sort_keys=True).encode()).hexdigest()[:12]
     result = {"rows": rows, "markets": markets, "snapshot": {"schema_version": 1, "run_id": run_id, "criteria": criteria, "rows": rows, "markets": markets}}
     result["report"] = render(result)
+    result["diligence"] = render_diligence(rows)
     return result
 
 
@@ -118,12 +144,13 @@ def write_outputs(result, output_dir):
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.md").write_text(result["report"])
     (out / "run.json").write_text(json.dumps(result["snapshot"], indent=2, sort_keys=True) + "\n")
-    fields = ["listing_id", "title", "category", "asking_price", "monthly_profit", "annual_profit_multiple", "age_months", "monthly_traffic", "decision", "flags", "status", "source_url", "captured_at"]
+    (out / "diligence.md").write_text(result["diligence"])
+    fields = ["listing_id", "title", "category", "asking_price", "monthly_profit", "annual_profit_multiple", "age_months", "monthly_traffic", "decision", "flags", "exclusion_reasons", "status", "source_url", "captured_at"]
     with (out / "listings.csv").open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for row in result["rows"]:
-            writer.writerow({key: csv_cell(json.dumps(row[key]) if key == "flags" else row.get(key)) for key in fields})
+            writer.writerow({key: csv_cell(json.dumps(row[key]) if key in {"flags", "exclusion_reasons"} else row.get(key)) for key in fields})
 
 
 def main():

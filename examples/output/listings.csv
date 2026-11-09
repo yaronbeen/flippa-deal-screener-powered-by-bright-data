@@ -1,4 +1,4 @@
-listing_id,title,category,asking_price,monthly_profit,annual_profit_multiple,age_months,monthly_traffic,decision,flags,status,source_url,captured_at
-synthetic-123-acme,Acme Metrics,SaaS,24000.0,2000.0,1.0,24,8000,manual_diligence,"[""seller_claims_not_independently_verified""]",new,https://flippa.com/synthetic-123-acme,2026-11-09T12:00:00Z
-synthetic-456-beta,Beta Content,Content,18000.0,,,18,12000,evidence_gap,"[""seller_claims_not_independently_verified"", ""profit_not_disclosed""]",new,https://flippa.com/synthetic-456-beta,2026-11-09T12:01:00Z
-synthetic-789-gamma,Gamma Commerce,Ecommerce,60000.0,3000.0,1.67,36,20000,excluded,"[""seller_claims_not_independently_verified""]",new,https://flippa.com/synthetic-789-gamma,2026-11-09T12:02:00Z
+listing_id,title,category,asking_price,monthly_profit,annual_profit_multiple,age_months,monthly_traffic,decision,flags,exclusion_reasons,status,source_url,captured_at
+synthetic-123-acme,Acme Metrics,SaaS,24000.0,2000.0,1.0,24,8000,manual_diligence,"[""seller_claims_not_independently_verified""]",[],new,https://flippa.com/synthetic-123-acme,2026-11-09T12:00:00Z
+synthetic-456-beta,Beta Content,Content,18000.0,,,18,12000,evidence_gap,"[""seller_claims_not_independently_verified"", ""profit_not_disclosed""]",[],new,https://flippa.com/synthetic-456-beta,2026-11-09T12:01:00Z
+synthetic-789-gamma,Gamma Commerce,Ecommerce,60000.0,3000.0,1.67,36,20000,excluded,"[""seller_claims_not_independently_verified""]","[""price_above_max""]",new,https://flippa.com/synthetic-789-gamma,2026-11-09T12:02:00Z

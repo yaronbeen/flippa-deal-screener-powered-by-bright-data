@@ -16,7 +16,7 @@ Use it to:
 
 ## Why Bright Data
 
-Deal research should not require a new scraper for every marketplace. [Bright Data](https://brightdata.com/) MCP gives your agent one way to attempt public category and user-supplied listing pages as Markdown inside the research workflow. The live check verified category-page context only; it did not verify an individual listing capture. The agent can spend its effort on diligence questions instead of page plumbing, while failed listing captures remain explicit evidence gaps.
+Deal research should not require a new scraper for every marketplace. [Bright Data](https://docs.brightdata.com/products/mcp-server/overview) MCP gives your agent one way to attempt public category and user-supplied listing pages as Markdown inside the research workflow. The live check verified category-page context only; it did not verify an individual listing capture. The agent can spend its effort on diligence questions instead of page plumbing, while failed listing captures remain explicit evidence gaps.
 
 ## Start with 5,000 free credits
 
@@ -27,9 +27,10 @@ The default plan uses **1 category page and up to 8 user-supplied listing pages*
 ## What you get
 
 - `report.md`: a concise manual-diligence queue and displayed category context.
-- `listings.csv`: stable `listing_id` keys, economics, gaps, and change status.
+- `listings.csv`: stable `listing_id` keys, economics, gaps, change status, and explicit `exclusion_reasons`.
+- `diligence.md`: listing-specific requests for missing evidence plus ownership, financial, traffic, legal, and transfer checks.
 - `run.json`: a watchlist snapshot for the next review.
-- Explicit decisions: `manual_diligence`, `evidence_gap`, or `excluded`.
+- Explicit decisions: `manual_diligence`, `evidence_gap`, or `excluded`, with visible reasons when a buy-box rule excludes a listing.
 
 ## Give this to your agent
 
@@ -47,16 +48,22 @@ the capture. Do not invent listing details or bypass login.
 
 Strip seller and broker identities. Preserve displayed figures as source claims.
 Normalize the evidence and run scripts/report.py. Return the diligence queue,
-missing-evidence flags, and changed rows. Do not value a business, contact a seller,
-place a bid, or make a purchase recommendation.
+diligence.md checklist, exclusion reasons, missing-evidence flags, and changed rows.
+Do not value a business, contact a seller, place a bid, or make a purchase recommendation.
 ```
 
 ## Install
 
-Requires Python 3.10+, an agent with Bright Data MCP connected as `brightdata`, and access to this private repo.
+Requires Python 3.10+ and an MCP-compatible agent. This is a public repo.
+
+### 1. Connect Bright Data MCP
+
+Follow [Install Bright Data MCP](docs/install-bright-data-mcp.md). Choose hosted or local setup, then verify `search_engine` and `scrape_as_markdown` are connected as `brightdata`.
+
+### 2. Clone the skill
 
 ```bash
-git clone git@github.com:yaronbeen/flippa-deal-screener-powered-by-bright-data.git \
+git clone https://github.com/yaronbeen/flippa-deal-screener-powered-by-bright-data.git \
   ~/.claude/skills/flippa-deal-screener
 ```
 
@@ -96,7 +103,7 @@ The tests were committed before the helper.
 python3 -m unittest discover -s tests -v
 ```
 
-Tests cover money parsing, positive-profit gates, dedupe, seller-identity removal, missing-evidence decisions, buyer filters, CSV injection, watchlist diffs, and a sanitized live category capture. See [the testing note](docs/testing.md).
+Tests cover money parsing, positive-profit gates, dedupe, seller-identity removal, missing-evidence decisions, buyer filters, explicit exclusion reasons, diligence checklists, MCP installation docs, CSV injection, watchlist diffs, and a sanitized live category capture. See [the testing note](docs/testing.md).
 
 ## What this is not
 

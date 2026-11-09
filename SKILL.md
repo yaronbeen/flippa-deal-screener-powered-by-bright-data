@@ -18,7 +18,7 @@ Turn selected public Flippa listings into a mechanical manual-diligence queue. S
 - Marketplace and seller figures are claims at capture time, not independently verified facts.
 - Do not enumerate category inventory when the capture is truncated or listing cards are not visible.
 - `unknown` is not zero. `manual_diligence` is not a recommendation.
-- If Bright Data MCP is unavailable, ask the user to connect it and stop.
+- If Bright Data MCP is unavailable, follow `docs/install-bright-data-mcp.md` or ask the user to connect it; stop until the required tools are visible.
 
 ## Inputs
 
@@ -100,8 +100,9 @@ For each row return:
 - Decision: `manual_diligence`, `evidence_gap`, or `excluded`.
 - Displayed economics and calculated multiple when available.
 - Missing fields and the permanent `seller_claims_not_independently_verified` flag.
+- Explicit `exclusion_reasons` when a buy-box rule excludes the row; do not hide or override them.
 - Source URL and change status.
-- Suggested next verification questions, not a valuation.
+- The listing-specific checklist in `diligence.md`, including missing evidence and independent verification steps, not a valuation.
 
 Category counts describe displayed marketplace labels at capture time. They are not sales, demand, or deal volume.
 
@@ -115,4 +116,4 @@ Category counts describe displayed marketplace labels at capture time. They are 
 
 ## Output limits
 
-No business valuation, investment advice, seller outreach, bidding, or purchase. Return `report.md`, `listings.csv`, and `run.json` paths.
+No business valuation, investment advice, seller outreach, bidding, or purchase. Return `report.md`, `listings.csv`, `diligence.md`, and `run.json` paths.

@@ -20,6 +20,7 @@
       "captured_at": "2026-11-09T12:00:00Z",
       "category": "SaaS",
       "decision": "manual_diligence",
+      "exclusion_reasons": [],
       "flags": [
         "seller_claims_not_independently_verified"
       ],
@@ -37,6 +38,7 @@
       "captured_at": "2026-11-09T12:01:00Z",
       "category": "Content",
       "decision": "evidence_gap",
+      "exclusion_reasons": [],
       "flags": [
         "seller_claims_not_independently_verified",
         "profit_not_disclosed"
@@ -55,6 +57,9 @@
       "captured_at": "2026-11-09T12:02:00Z",
       "category": "Ecommerce",
       "decision": "excluded",
+      "exclusion_reasons": [
+        "price_above_max"
+      ],
       "flags": [
         "seller_claims_not_independently_verified"
       ],
@@ -66,6 +71,6 @@
       "title": "Gamma Commerce"
     }
   ],
-  "run_id": "cbaf3de3e3ff",
+  "run_id": "3405fe902495",
   "schema_version": 1
 }
