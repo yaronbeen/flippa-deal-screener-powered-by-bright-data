@@ -77,6 +77,32 @@ class FlippaTests(unittest.TestCase):
         self.assertIn("not demand", result["report"])
 
 
+    def test_diligence_output_explains_exclusions_and_missing_evidence(self):
+        rows = [
+            {"listing_id": "123", "title": "Acme", "asking_price": 12000, "monthly_profit": 1000, "age_months": 24, "monthly_traffic": 5000, "source_url": "https://flippa.com/123-acme"},
+            {"listing_id": "456", "title": "Beta", "asking_price": 8000, "monthly_profit": 1000, "source_url": "https://flippa.com/456-beta"},
+        ]
+        result = analyze({"criteria": {"max_price": 10000}, "rows": rows})
+        by_id = {row["listing_id"]: row for row in result["rows"]}
+        self.assertEqual(by_id["123"]["exclusion_reasons"], ["price_above_max"])
+        self.assertIn("price_above_max", result["diligence"])
+        self.assertIn("Verify the business age", result["diligence"])
+        self.assertIn("https://flippa.com/456-beta", result["diligence"])
+        with tempfile.TemporaryDirectory() as tmp:
+            write_outputs(result, tmp)
+            self.assertTrue((Path(tmp) / "diligence.md").is_file())
+
+    def test_bright_data_mcp_installation_is_documented(self):
+        root = Path(__file__).parents[1]
+        readme = (root / "README.md").read_text()
+        guide = (root / "docs" / "install-bright-data-mcp.md").read_text()
+        self.assertNotIn("private repo", readme.lower())
+        self.assertIn("docs/install-bright-data-mcp.md", readme)
+        self.assertIn("@brightdata/mcp", guide)
+        self.assertIn("https://mcp.brightdata.com/mcp?token=", guide)
+        self.assertIn("search_engine,scrape_as_markdown", guide)
+        self.assertIn("{env:BRIGHT_DATA_API_TOKEN}", guide)
+
     def test_shipped_example_output_and_readme_table_are_current(self):
         root = Path(__file__).parents[1]
         result = analyze(json.loads((root / "examples" / "input.json").read_text()))
