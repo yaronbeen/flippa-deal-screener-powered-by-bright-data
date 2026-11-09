@@ -1,0 +1,71 @@
+{
+  "criteria": {
+    "max_multiple": 3,
+    "max_price": 50000,
+    "min_monthly_profit": 500
+  },
+  "markets": [
+    {
+      "captured_at": "2026-11-09T11:55:00Z",
+      "category": "SaaS",
+      "displayed_listing_count": 677,
+      "source_url": "https://flippa.com/buy/saas"
+    }
+  ],
+  "rows": [
+    {
+      "age_months": 24,
+      "annual_profit_multiple": 1.0,
+      "asking_price": 24000.0,
+      "captured_at": "2026-11-09T12:00:00Z",
+      "category": "SaaS",
+      "decision": "manual_diligence",
+      "flags": [
+        "seller_claims_not_independently_verified"
+      ],
+      "listing_id": "synthetic-123-acme",
+      "monthly_profit": 2000.0,
+      "monthly_traffic": 8000,
+      "source_url": "https://flippa.com/synthetic-123-acme",
+      "status": "new",
+      "title": "Acme Metrics"
+    },
+    {
+      "age_months": 18,
+      "annual_profit_multiple": null,
+      "asking_price": 18000.0,
+      "captured_at": "2026-11-09T12:01:00Z",
+      "category": "Content",
+      "decision": "evidence_gap",
+      "flags": [
+        "seller_claims_not_independently_verified",
+        "profit_not_disclosed"
+      ],
+      "listing_id": "synthetic-456-beta",
+      "monthly_profit": null,
+      "monthly_traffic": 12000,
+      "source_url": "https://flippa.com/synthetic-456-beta",
+      "status": "new",
+      "title": "Beta Content"
+    },
+    {
+      "age_months": 36,
+      "annual_profit_multiple": 1.67,
+      "asking_price": 60000.0,
+      "captured_at": "2026-11-09T12:02:00Z",
+      "category": "Ecommerce",
+      "decision": "excluded",
+      "flags": [
+        "seller_claims_not_independently_verified"
+      ],
+      "listing_id": "synthetic-789-gamma",
+      "monthly_profit": 3000.0,
+      "monthly_traffic": 20000,
+      "source_url": "https://flippa.com/synthetic-789-gamma",
+      "status": "new",
+      "title": "Gamma Commerce"
+    }
+  ],
+  "run_id": "cbaf3de3e3ff",
+  "schema_version": 1
+}

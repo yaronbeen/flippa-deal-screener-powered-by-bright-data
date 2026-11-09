@@ -1,0 +1,11 @@
+{
+  "capture_date": "2026-11-09",
+  "source": "Flippa public SaaS category page",
+  "sanitization": "Navigation, filters, seller data, and promotional content removed. Category count is a displayed label, not a transaction count.",
+  "markets": [
+    {"category": "SaaS", "displayed_listing_count": 677, "source_url": "https://flippa.com/buy/saas", "captured_at": "2026-11-09"},
+    {"category": "Ecommerce", "displayed_listing_count": 2305, "source_url": "https://flippa.com/buy/saas", "captured_at": "2026-11-09"},
+    {"category": "Content", "displayed_listing_count": 789, "source_url": "https://flippa.com/buy/saas", "captured_at": "2026-11-09"}
+  ],
+  "capture_limitation": "The 40,000-character capture ended before individual listing cards. No listing-level live fixture is claimed."
+}

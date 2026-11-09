@@ -46,6 +46,13 @@ class FlippaTests(unittest.TestCase):
             self.assertIn("not independently verified", (Path(tmp) / "report.md").read_text().lower())
             self.assertTrue((Path(tmp) / "run.json").is_file())
 
+    def test_sanitized_live_category_context_is_not_a_deal(self):
+        fixture = json.loads((Path(__file__).parent / "fixtures" / "sanitized_live.json").read_text())
+        result = analyze({"rows": [], "markets": fixture["markets"]})
+        self.assertEqual(result["rows"], [])
+        self.assertEqual(result["markets"][0]["displayed_listing_count"], 677)
+        self.assertIn("not demand", result["report"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,12 @@
+{
+  "example_type": "synthetic",
+  "criteria": {"max_price": 50000, "min_monthly_profit": 500, "max_multiple": 3},
+  "rows": [
+    {"listing_id": "synthetic-123-acme", "title": "Acme Metrics", "category": "SaaS", "asking_price": "$24k", "monthly_profit": "$2k", "age_months": 24, "monthly_traffic": 8000, "source_url": "https://flippa.com/synthetic-123-acme", "captured_at": "2026-11-09T12:00:00Z"},
+    {"listing_id": "synthetic-456-beta", "title": "Beta Content", "category": "Content", "asking_price": "$18k", "monthly_profit": "undisclosed", "age_months": 18, "monthly_traffic": 12000, "source_url": "https://flippa.com/synthetic-456-beta", "captured_at": "2026-11-09T12:01:00Z"},
+    {"listing_id": "synthetic-789-gamma", "title": "Gamma Commerce", "category": "Ecommerce", "asking_price": "$60k", "monthly_profit": "$3k", "age_months": 36, "monthly_traffic": 20000, "source_url": "https://flippa.com/synthetic-789-gamma", "captured_at": "2026-11-09T12:02:00Z"}
+  ],
+  "markets": [
+    {"category": "SaaS", "displayed_listing_count": 677, "source_url": "https://flippa.com/buy/saas", "captured_at": "2026-11-09T11:55:00Z"}
+  ]
+}
