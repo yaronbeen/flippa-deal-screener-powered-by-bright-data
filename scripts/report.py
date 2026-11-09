@@ -58,6 +58,10 @@ def screen_listing(row, criteria):
     for field, flag in required.items():
         if row.get(field) is None:
             flags.append(flag)
+    if row.get("asking_price") is not None and row["asking_price"] <= 0:
+        flags.append("price_not_positive")
+    if row.get("monthly_profit") is not None and row["monthly_profit"] <= 0:
+        flags.append("profit_not_positive")
     excluded = False
     if criteria.get("max_price") is not None and row.get("asking_price") is not None:
         excluded |= row["asking_price"] > criteria["max_price"]

@@ -128,4 +128,4 @@ docs/                    Setup, schema, testing, and live-check notes
 
 ---
 
-Built by Yaron Been. MIT licensed. Powered by Bright Data, without implying endorsement.
+Independent project by Yaron Been. MIT licensed. Powered by Bright Data; no affiliation or endorsement is implied.
